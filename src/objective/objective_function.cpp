@@ -6,7 +6,9 @@
 namespace LightGBM {
 
 ObjectiveFunction* ObjectiveFunction::CreateObjectiveFunction(const std::string& type, const ObjectiveConfig& config) {
-  if (type == "regression") {
+  if (type == "regression-fair") {
+    return new RegressionFairloss(config);
+  } else if (type == "regression") {
     return new RegressionL2loss(config);
   } else if (type == "binary") {
     return new BinaryLogloss(config);
