@@ -104,6 +104,7 @@ Tree* SerialTreeLearner::Train(const score_t* gradients, const score_t *hessians
   hessians_ = hessians;
   // some initial works before training
   BeforeTrain();
+  // Log::Stdout("BeforeTree() returned \n");
   Tree *tree = new Tree(num_leaves_);
   // root leaf
   int left_leaf = 0;
@@ -225,6 +226,7 @@ bool SerialTreeLearner::BeforeFindBestSplit(int left_leaf, int right_leaf) {
   // no enough data to continue
   if (num_data_in_right_child < static_cast<data_size_t>(min_num_data_one_leaf_ * 2)
     && num_data_in_left_child < static_cast<data_size_t>(min_num_data_one_leaf_ * 2)) {
+      // Log::Stdout("BeforeFindBestSplit will return false now.\n");
     best_split_per_leaf_[left_leaf].gain = kMinScore;
     if (right_leaf >= 0) {
       best_split_per_leaf_[right_leaf].gain = kMinScore;
@@ -235,6 +237,7 @@ bool SerialTreeLearner::BeforeFindBestSplit(int left_leaf, int right_leaf) {
   int smaller_leaf = -1;
   // only have root
   if (right_leaf < 0) {
+    // Log::Stdout("Only have root");
     smaller_leaf_histogram_array_ = historical_histogram_array_[left_leaf];
     larger_leaf_histogram_array_ = nullptr;
   } else if (num_data_in_left_child < num_data_in_right_child) {
@@ -256,6 +259,7 @@ bool SerialTreeLearner::BeforeFindBestSplit(int left_leaf, int right_leaf) {
   // init for the ordered gradients, only initialize when have 2 leaves
   if (smaller_leaf >= 0) {
     // only need to initialize for smaller leaf
+    // Log::Stdout("only need to initialize for smaller leaf");
 
     // Get leaf boundary
     const data_size_t* indices = data_partition_->indices();
@@ -275,6 +279,7 @@ bool SerialTreeLearner::BeforeFindBestSplit(int left_leaf, int right_leaf) {
   // split for the ordered bin
   if (has_ordered_bin_ && right_leaf >= 0) {
     // mark data that at left-leaf
+    // Log::Stdout("split for the ordered bin - mark data that is at left-leaf");
     std::memset(is_data_in_leaf_, 0, sizeof(char)*num_data_);
     const data_size_t* indices = data_partition_->indices();
     data_size_t begin = data_partition_->leaf_begin(left_leaf);
@@ -291,6 +296,7 @@ bool SerialTreeLearner::BeforeFindBestSplit(int left_leaf, int right_leaf) {
       }
     }
   }
+  // Log::Stdout("BeforeFindBestSplit will return true now.\n");
   return true;
 }
 

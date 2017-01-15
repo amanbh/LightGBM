@@ -194,8 +194,10 @@ void GBDT::Train() {
     fflush(output_model_file);
     auto end_time = std::chrono::high_resolution_clock::now();
     // output used time per iteration
-    Log::Stdout("%f seconds elapsed, finished %d iteration", std::chrono::duration<double,
-                                     std::milli>(end_time - start_time) * 1e-3, iter + 1);
+
+    // Log::Stdout("%f seconds elapsed, finished %d iteration", std::chrono::duration<double,
+    //                                   std::milli>(end_time - start_time) * 1e-3, iter + 1);
+
   }
   // close file
   fclose(output_model_file);
@@ -215,7 +217,7 @@ void GBDT::UpdateScore(const Tree* tree) {
 }
 
 bool GBDT::OutputMetric(int iter) {
-  score_t train_score_ = 0, test_score_ = 0; 
+  score_t train_score_ = 0, test_score_ = 0;
   bool ret = false;
   // print training metric
   for (auto& sub_metric : training_metrics_) {

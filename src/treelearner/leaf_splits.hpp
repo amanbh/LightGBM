@@ -60,6 +60,7 @@ public:
     }
     sum_gradients_ = tmp_sum_gradients;
     sum_hessians_ = tmp_sum_hessians;
+    Log::Stdout("grad/hess sum = %g, %g", sum_gradients_, sum_hessians_);
     for (SplitInfo& split_info : best_split_per_feature_) {
       split_info.Reset();
     }
@@ -85,6 +86,7 @@ public:
     }
     sum_gradients_ = tmp_sum_gradients;
     sum_hessians_ = tmp_sum_hessians;
+    // Log::Stdout("grad/hess sum = %g, %g", sum_gradients_, sum_hessians_);
     for (SplitInfo& split_info : best_split_per_feature_) {
       split_info.Reset();
     }
